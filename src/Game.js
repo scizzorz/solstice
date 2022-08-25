@@ -58,18 +58,18 @@ const shuffleArray = array => {
 }
 
 export const buildBoard = function(numPlayers) {
-  var size = boardSizes[numPlayers];
+  const size = boardSizes[numPlayers];
   return Array(size * size).fill(null);
 };
 
 export const buildHands = function(numPlayers) {
-  var size = handSizes[numPlayers];
-  var hands = Array(numPlayers);
-  var drawDeck = [...deck];
+  const size = handSizes[numPlayers];
+  const hands = Array(numPlayers);
+  const drawDeck = [...deck];
   shuffleArray(drawDeck);
-  for(var i=0; i<numPlayers; i++) {
+  for(let i = 0; i < numPlayers; i++) {
     hands[i] = [];
-    for(var j=0; j<size; j++) {
+    for(let j = 0; j < size; j++) {
       hands[i].push(drawDeck.pop());
     }
   }
@@ -82,7 +82,7 @@ export const buildHands = function(numPlayers) {
 export const playPiece = function(G, ctx, piece, x, y, shieldBreak) {
   // special rules
   if(piece === "soul") {
-    var target = getPiece(G, x, y);
+    const target = getPiece(G, x, y);
 
     // soul piece _requires_ a piece to be there, _and_ it must be active
     if(target == null || !target.active) {
@@ -100,7 +100,7 @@ export const playPiece = function(G, ctx, piece, x, y, shieldBreak) {
     return false;
   }
 
-  var neighbors = [
+  const neighbors = [
     getPiece(G, x, y - 1),
     getPiece(G, x + 1, y),
     getPiece(G, x, y + 1),
@@ -108,7 +108,7 @@ export const playPiece = function(G, ctx, piece, x, y, shieldBreak) {
   ];
 
   // used by double dots
-  var nextNeighbors = [
+  const nextNeighbors = [
     getPiece(G, x, y - 2),
     getPiece(G, x + 2, y),
     getPiece(G, x, y + 2),
@@ -121,7 +121,7 @@ export const playPiece = function(G, ctx, piece, x, y, shieldBreak) {
     }
 
     // (direction + 2) mod 4 conveniently gets the opposite-facing action
-    var defense = neighbor.piece.charAt((a + 2) % 4);
+    const defense = neighbor.piece.charAt((a + 2) % 4);
 
     // if it's face up, flip it face down unless it's blocking
     if(neighbor.active && defense !== "b") {
@@ -135,8 +135,8 @@ export const playPiece = function(G, ctx, piece, x, y, shieldBreak) {
   }
 
   // 4 directions, 4 actions, 4 neighbors
-  for(var a=0; a<4; a++) {
-    var action = piece.charAt(a);
+  for(let a = 0; a < 4; a++) {
+    const action = piece.charAt(a);
     if(neighbors[a] != null) {
       if(action === "s") { // single dot
         flipNeighbor(neighbors[a], a);
@@ -196,9 +196,9 @@ export const Solstice = {
     playPiece: {
       client: false,
       move: (G, ctx, id, x, y, shieldBreak) => {
-        var hand = G.hands[ctx.currentPlayer];
-        var piece = hand[id];
-        var success = playPiece(G, ctx, piece, x, y, shieldBreak);
+        const hand = G.hands[ctx.currentPlayer];
+        const piece = hand[id];
+        const success = playPiece(G, ctx, piece, x, y, shieldBreak);
         console.log("played piece: " + success);
         if(success) {
           hand.splice(id, 1);

@@ -57,7 +57,7 @@ const JoinLobby = () => {
     <input id="playerName" ref={playerNameRef} placeholder="player name"/>
 
     <div id="joinMatch">
-      <button onClick={() => joinMatch()}>Join Game</button>
+      <button onClick={() => joinMatch()}>Join</button>
     </div>
   </div>;
 };
