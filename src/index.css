@@ -1,0 +1,399 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+:root {
+  --base0: #2b3235;
+  --base1: #394246;
+  --base2: #495659;
+  --base3: #c7c5bb;
+  --base4: #e1dfda;
+  --base5: #fcfcfc;
+  --red: #ff4b42;
+  --orange: #ff831e;
+  --yellow: #efbb00;
+  --lime: #7ac600;
+  --green: #00c609;
+  --teal: #0bb792;
+  --cyan: #00aeb7;
+  --blue: #3d94ff;
+  --indigo: #757cff;
+  --purple: #ad6bff;
+  --magenta: #f542ff;
+  --pink: #ff32a3;
+
+  --background: var(--base0);
+  --foreground: var(--base4);
+  --codebg: var(--base1);
+  --codefg: var(--base4);
+  --accent: var(--blue);
+  --lowlight: var(--base3);
+
+  --nav: var(--indigo);
+  --byline: var(--indigo);
+
+  --mask: var(--purple);
+  --milk: var(--blue);
+  --mold: var(--yellow);
+  --vx: var(--teal);
+  --xcl: var(--pink);
+  --xtfc: var(--orange);
+
+  --great: var(--green);
+  --good: var(--lime);
+  --okay: var(--yellow);
+  --bad: var(--red);
+}
+
+html {
+  margin: 0;
+  font-size: 11pt;
+  color: var(--foreground);
+  background-color: var(--background);
+  font-family: Anton, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  width: 42rem;
+  padding: 1rem;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 8rem;
+  margin: 1rem 0;
+}
+
+h1 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1 a:hover {
+  color: var(--cyan);
+}
+
+h2 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 2rem;
+  margin: 1rem 0;
+}
+
+#winner {
+  text-transform: uppercase;
+  font-size: 4rem;
+}
+
+.bgio-loading {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cell {
+  position: relative;
+  width: 8rem;
+  height: 8rem;
+  padding: 0;
+}
+
+.cell img {
+  width: 100%;
+  height: 100%;
+}
+
+.board.n2 #board .cell {
+  width: 12rem;
+  height: 12rem;
+}
+
+.board.n3 #board .cell {
+  width: 10rem;
+  height: 10rem;
+}
+
+.board.n4 #board .cell {
+  width: 8rem;
+  height: 8rem;
+}
+
+@media (max-width: 44rem) {
+  body {
+    width: 32rem;
+  }
+
+  h1 {
+    font-size: 6rem;
+  }
+
+  #winner {
+    font-size: 3rem;
+  }
+
+  .cell {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .board.n2 #board .cell {
+    width: 9rem;
+    height: 9rem;
+  }
+
+  .board.n3 #board .cell {
+    width: 7.5rem;
+    height: 7.5rem;
+  }
+
+  .board.n4 #board .cell {
+    width: 6rem;
+    height: 6rem;
+  }
+}
+
+@media (max-width: 34rem) {
+  body {
+    width: 22rem;
+  }
+
+  h1 {
+    font-size: 4rem;
+  }
+
+  #winner {
+    font-size: 2rem;
+  }
+
+  .cell {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .board.n2 #board .cell {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .board.n3 #board .cell {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .board.n4 #board .cell {
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+#lobby {
+  text-align: center;
+  margin: 0 auto;
+  border: 1px solid var(--base5);
+  font-size: 2rem;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#lobby input {
+  text-align: center;
+  color: var(--base5);
+  background-color: var(--base2);
+  border: 0.2rem solid var(--base1);
+  margin: 1rem 0;
+  box-sizing: border-box;
+  width: 20rem;
+}
+
+#lobby #createMatch {
+  margin: 0 1rem;
+  padding: 0;
+  border: 1px solid var(--base3);
+  border-left: 0;
+  border-right: 0;
+  box-sizing: border-box;
+}
+
+#lobby #createMatch h2 {
+  margin-bottom: 0;
+}
+
+#lobby #createMatch button {
+  border: 0.2rem solid var(--base5);
+  background-color: var(--base1);
+  padding: 1rem;
+  margin: 1rem;
+  width: 5rem;
+  height: 5rem;
+  box-sizing: border-box;
+}
+
+#lobby #createMatch button:hover {
+  background-color: var(--base2);
+  cursor: pointer;
+}
+
+#lobby #createMatch button.p2 {
+  margin-right: 0;
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+#lobby #createMatch button.p3 {
+  margin-right: 0;
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
+#lobby #createMatch button.p4 {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+#lobby #joinMatch {
+  margin: 0 1rem;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#lobby #joinMatch input {
+  margin: 1rem 0 0 0;
+}
+
+#lobby #joinMatch button {
+  height: 5rem;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--base4);
+  padding: 1rem;
+  margin: 1rem;
+  background-color: var(--base1);
+  border: 0.2rem solid var(--base4);
+  box-sizing: border-box;
+}
+
+#lobby #joinMatch button:hover {
+  background-color: var(--base2);
+  cursor: pointer;
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
+
+.board {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.board.active {
+}
+
+.board #board {
+  margin: 1rem auto;
+  border-collapse: collapse;
+}
+
+.board #hand {
+  margin: 1rem;
+}
+
+.board #hand div {
+  display: inline-block;
+  margin: 0.5rem;
+}
+
+.cell {
+  font-size: 1.5rem;
+  background-color: var(--base1);
+  border: 0.2rem solid var(--base2);
+  text-align: center;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+
+.cell:hover {
+  cursor: pointer;
+  background-color: var(--base2);
+  border-color: var(--base3);
+}
+
+.cell.selected {
+  border-color: var(--orange);
+}
+
+.cell.selected:hover {
+}
+
+.cell.p1 {
+  background-color: var(--red);
+}
+
+.cell.p2 {
+  background-color: var(--blue);
+}
+
+.cell.p3 {
+  background-color: var(--yellow);
+}
+
+.cell.p4 {
+  background-color: var(--green);
+}
+
+.cell.p1:hover,
+.cell.p2:hover,
+.cell.p3:hover,
+.cell.p4:hover {
+  border-color: var(--base3);
+}
+
+.cell.p1.inactive {
+  background-color: var(--base1);
+  color: var(--red);
+  border-color: var(--red);
+}
+
+.cell.p2.inactive {
+  background-color: var(--base1);
+  color: var(--blue);
+  border-color: var(--blue);
+}
+
+.cell.p3.inactive {
+  background-color: var(--base1);
+  color: var(--yellow);
+  border-color: var(--yellow);
+}
+
+.cell.p4.inactive {
+  background-color: var(--base1);
+  color: var(--green);
+  border-color: var(--green);
+}
+
+.cell.p1.inactive:hover,
+.cell.p2.inactive:hover,
+.cell.p3.inactive:hover,
+.cell.p4.inactive:hover {
+  background-color: var(--base2);
+}
+
+#winner.p1 {
+  color: var(--red);
+}
+
+#winner.p2 {
+  color: var(--blue);
+}
+
+#winner.p3 {
+  color: var(--yellow);
+}
+
+#winner.p4 {
+  color: var(--green);
+}
