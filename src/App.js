@@ -12,8 +12,6 @@ const BACKEND_PORT = 8002;
 const lobbyClient = new LobbyClient({ server: `http://${BACKEND_HOST}:${BACKEND_PORT}` });
 
 const CreateLobby = () => {
-  const playerNameRef = useRef("playerName");
-
   const createMatch = async (numPlayers) => {
     const { matchID } = await lobbyClient.createMatch("solstice", {
       numPlayers: numPlayers,
@@ -21,7 +19,7 @@ const CreateLobby = () => {
     });
 
     const { protocol, host } = window.location;
-    window.location.replace(`${protocol}//${host}/?match=${matchID}`);
+    window.location.replace(`${protocol}//${host}/${matchID}`);
   };
 
   return <div id="lobby">
@@ -36,9 +34,7 @@ const CreateLobby = () => {
 
 const JoinLobby = () => {
   const playerNameRef = useRef("playerName");
-  const params = new Proxy(new URLSearchParams(window.location.search), {
-    get: (searchParams, prop) => searchParams.get(prop),
-  });
+  const matchID = window.location.pathname.substr(1);
 
   const joinMatch = async () => {
     if(playerNameRef.current.value.length === 0) {
@@ -46,15 +42,15 @@ const JoinLobby = () => {
       return;
     }
 
-    const { playerID, playerCredentials } = await lobbyClient.joinMatch("solstice", params.match, {
+    const { playerID, playerCredentials } = await lobbyClient.joinMatch("solstice", matchID, {
       playerName: playerNameRef.current.value,
     });
 
-    window.localStorage.setItem(`${params.match}_creds`, playerCredentials);
-    window.localStorage.setItem(`${params.match}_id`, playerID);
+    window.localStorage.setItem(`${matchID}_creds`, playerCredentials);
+    window.localStorage.setItem(`${matchID}_id`, playerID);
 
     const { protocol, host } = window.location;
-    window.location.replace(`${protocol}//${host}/?match=${params.match}`);
+    window.location.replace(`${protocol}//${host}/${matchID}`);
   };
 
   return <div id="lobby">
@@ -67,13 +63,11 @@ const JoinLobby = () => {
 };
 
 const App = () => {
-  const params = new Proxy(new URLSearchParams(window.location.search), {
-    get: (searchParams, prop) => searchParams.get(prop),
-  });
+  const matchID = window.location.pathname.substr(1);
 
-  if(params.match) {
-    const creds = window.localStorage.getItem(`${params.match}_creds`);
-    const id = window.localStorage.getItem(`${params.match}_id`);
+  if(matchID.length > 0) {
+    const creds = window.localStorage.getItem(`${matchID}_creds`);
+    const id = window.localStorage.getItem(`${matchID}_id`);
     if(creds && id) {
       const SolsticeClient = Client({
         game: Solstice,
@@ -82,7 +76,7 @@ const App = () => {
         debug: false,
       });
 
-      return <SolsticeClient playerID={id} matchID={params.match} credentials={creds} />;
+      return <SolsticeClient playerID={id} matchID={matchID} credentials={creds} />;
     }
     else {
       return <JoinLobby />;
