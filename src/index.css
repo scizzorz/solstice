@@ -194,7 +194,6 @@ code {
 #lobby {
   text-align: center;
   margin: 0 auto;
-  border: 1px solid var(--base5);
   font-size: 2rem;
   padding: 0;
   box-sizing: border-box;
@@ -213,9 +212,6 @@ code {
 #lobby #createMatch {
   margin: 0 1rem;
   padding: 0;
-  border: 1px solid var(--base3);
-  border-left: 0;
-  border-right: 0;
   box-sizing: border-box;
 }
 

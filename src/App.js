@@ -15,40 +15,16 @@ const CreateLobby = () => {
   const playerNameRef = useRef("playerName");
 
   const createMatch = async (numPlayers) => {
-    if(playerNameRef.current.value.length === 0) {
-      alert("Please enter a name.");
-      return;
-    }
-
     const { matchID } = await lobbyClient.createMatch("solstice", {
       numPlayers: numPlayers,
       unlisted: true,
     });
 
-    joinMatch(matchID);
-  };
-
-  const joinMatch = async (matchID) => {
-    if(playerNameRef.current.value.length === 0) {
-      alert("Please enter a name.");
-      return;
-    }
-
-    const { playerID, playerCredentials } = await lobbyClient.joinMatch("solstice", matchID, {
-      playerName: playerNameRef.current.value,
-    });
-
-    window.localStorage.setItem(`${matchID}_creds`, playerCredentials);
-    window.localStorage.setItem(`${matchID}_id`, playerID);
-
     const { protocol, host } = window.location;
-
     window.location.replace(`${protocol}//${host}/?match=${matchID}`);
   };
 
   return <div id="lobby">
-    <input id="playerName" ref={playerNameRef} placeholder="player name"/>
-
     <div id="createMatch">
       <h2>Create Game</h2>
       <button className="p2" onClick={() => createMatch(2)}>2</button>
