@@ -4,7 +4,7 @@ import { LobbyClient } from 'boardgame.io/client';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import { Solstice } from './Game';
 import { SolsticeBoard } from './Board';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 const BACKEND_HOST = "fixme"
 const BACKEND_PORT = 8002;
@@ -13,7 +13,6 @@ const lobbyClient = new LobbyClient({ server: `http://${BACKEND_HOST}:${BACKEND_
 
 const CreateLobby = () => {
   const playerNameRef = useRef("playerName");
-  const matchIDRef = useRef("playerName");
 
   const createMatch = async (numPlayers) => {
     if(playerNameRef.current.value.length === 0) {
