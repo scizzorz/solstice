@@ -82,10 +82,17 @@ export const buildHands = function(numPlayers) {
 export const playPiece = function(G, ctx, piece, x, y, shieldBreak) {
   // special rules
   if(piece === "soul") {
+    // soul piece can't be played in the first round
+    if(ctx.turn <= ctx.numPlayers) {
+      console.log("cannot play soul piece in first round");
+      return false;
+    }
+
     const target = getPiece(G, x, y);
 
     // soul piece _requires_ a piece to be there, _and_ it must be active
     if(target == null || !target.active) {
+      console.log("soul piece must target another face-up piece");
       return false;
     }
 
@@ -97,6 +104,7 @@ export const playPiece = function(G, ctx, piece, x, y, shieldBreak) {
 
   // regular rules
   if(getPiece(G, x, y) != null) {
+    console.log("pieces must be placed on an empty space");
     return false;
   }
 
@@ -106,6 +114,16 @@ export const playPiece = function(G, ctx, piece, x, y, shieldBreak) {
     getPiece(G, x, y + 1),
     getPiece(G, x - 1, y),
   ];
+
+  // can't play adjacent to other pieces in the first round
+  if(ctx.turn <= ctx.numPlayers) {
+    for(let n = 0; n < neighbors.length; n++) {
+      if(neighbors[n] !== null) {
+        console.log("pieces must not be placed next to another piece in the first round");
+        return false;
+      }
+    }
+  }
 
   // used by double dots
   const nextNeighbors = [
