@@ -5,7 +5,7 @@ import { SocketIO } from 'boardgame.io/multiplayer';
 import { Solstice } from './Game';
 import { SolsticeBoard } from './Board';
 
-const ADDRESS = process.env.ADDRESS || "http://hex.xtfc.org:5000";
+const ADDRESS = process.env.ADDRESS || "https://xtfc-solstice.herokuapp.com";
 
 console.log("ADDRESS: " + ADDRESS);
 
