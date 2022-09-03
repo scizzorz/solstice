@@ -71,7 +71,7 @@ const App = () => {
       const SolsticeClient = Client({
         game: Solstice,
         board: SolsticeBoard,
-        multiplayer: SocketIO({server: `${BACKEND_HOST}:${BACKEND_PORT}`}),
+        multiplayer: SocketIO({server: ADDRESS}),
         debug: false,
       });
 
