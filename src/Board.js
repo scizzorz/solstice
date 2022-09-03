@@ -57,7 +57,7 @@ export function SolsticeBoard({ ctx, G, moves }) {
           setY(y);
           console.log("need to pick shield break");
 
-          if(x + offX < 0 || x + offY >= G.boardSize || y + offY < 0 || y + offY >= G.boardSize) {
+          if(x + offX < 0 || x + offX >= G.boardSize || y + offY < 0 || y + offY >= G.boardSize) {
             console.log("just kidding!");
             sendMove(selected, x, y, false);
           }
