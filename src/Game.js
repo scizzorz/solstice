@@ -155,26 +155,26 @@ export const playPiece = function(G, ctx, piece, x, y, shieldBreak) {
   // 4 directions, 4 actions, 4 neighbors
   for(let a = 0; a < 4; a++) {
     const action = piece.charAt(a);
-    if(neighbors[a] != null) {
-      if(action === "s") { // single dot
+    if(action === "s") { // single dot
+      flipNeighbor(neighbors[a], a);
+    }
+    else if(action === "d") { // double dot
+      console.log("shield break: " + shieldBreak);
+      if(shieldBreak) {
+        console.log("shield break");
+        neighbors[a].active = !neighbors[a].active;
+      }
+      else {
+        console.log("double tap");
         flipNeighbor(neighbors[a], a);
+        flipNeighbor(nextNeighbors[a], a);
       }
-      else if(action === "d") { // double dot
-        console.log("double flipping:" + shieldBreak);
-        if(shieldBreak) {
-          neighbors[a].active = !neighbors[a].active;
-        }
-        else {
-          flipNeighbor(neighbors[a], a);
-          flipNeighbor(nextNeighbors[a], a);
-        }
-      }
-      else if(action === "b") { // block
-        // noop
-      }
-      else if(action === "x") { // blank
-        // noop
-      }
+    }
+    else if(action === "b") { // block
+      // noop
+    }
+    else if(action === "x") { // blank
+      // noop
     }
   }
 
