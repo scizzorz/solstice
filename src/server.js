@@ -1,13 +1,25 @@
-import { Server, Origins } from 'boardgame.io/server';
+import path from 'path';
+import serve from 'koa-static';
+import { Server } from 'boardgame.io/server';
 import { Solstice } from './Game';
 
-const HOST = process.env.HOST;
-const FRONTEND_PORT = process.env.FRONTEND_PORT || 8001;
-const PORT = process.env.PORT || 8002;
+const PORT = process.env.PORT || 8000;
 
 const server = Server({
   games: [Solstice],
   origins: [Origins.LOCALHOST, `http://${HOST}:${FRONTEND_PORT}`],
 });
 
-server.run(PORT);
+// Build path relative to the server.js file
+const frontEndAppBuildPath = path.resolve(__dirname, '../build');
+console.log(frontEndAppBuildPath);
+server.app.use(serve(frontEndAppBuildPath))
+
+server.run(PORT, () => {
+  server.app.use(
+    async (ctx, next) => await serve(frontEndAppBuildPath)(
+      Object.assign(ctx, { path: 'index.html' }),
+      next
+    )
+  )
+});
