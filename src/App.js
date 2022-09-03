@@ -4,7 +4,6 @@ import { LobbyClient } from 'boardgame.io/client';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import { Solstice } from './Game';
 import { SolsticeBoard } from './Board';
-import { useRef } from 'react';
 
 const ADDRESS = process.env.ADDRESS || "http://hex.xtfc.org:5000";
 
@@ -33,36 +32,6 @@ const CreateLobby = () => {
   </div>;
 };
 
-const JoinLobby = () => {
-  const playerNameRef = useRef("playerName");
-  const matchID = window.location.pathname.substr(1);
-
-  const joinMatch = async () => {
-    if(playerNameRef.current.value.length === 0) {
-      alert("Please enter a name.");
-      return;
-    }
-
-    const { playerID, playerCredentials } = await lobbyClient.joinMatch("solstice", matchID, {
-      playerName: playerNameRef.current.value,
-    });
-
-    window.localStorage.setItem(`${matchID}_creds`, playerCredentials);
-    window.localStorage.setItem(`${matchID}_id`, playerID);
-
-    const { protocol, host } = window.location;
-    window.location.replace(`${protocol}//${host}/${matchID}`);
-  };
-
-  return <div id="lobby">
-    <input id="playerName" ref={playerNameRef} placeholder="player name"/>
-
-    <div id="joinMatch">
-      <button onClick={() => joinMatch()}>Join</button>
-    </div>
-  </div>;
-};
-
 const App = () => {
   const matchID = window.location.pathname.substr(1);
 
@@ -80,7 +49,21 @@ const App = () => {
       return <SolsticeClient playerID={id} matchID={matchID} credentials={creds} />;
     }
     else {
-      return <JoinLobby />;
+      // there's actually no need for names since they don't even show up?
+      // maybe I should just put them in G somehow, idk
+      const joinMatch = async () => {
+        const { playerID, playerCredentials } = await lobbyClient.joinMatch("solstice", matchID, {
+          playerName: "asd",
+        });
+
+        window.localStorage.setItem(`${matchID}_creds`, playerCredentials);
+        window.localStorage.setItem(`${matchID}_id`, playerID);
+
+        const { protocol, host } = window.location;
+        window.location.replace(`${protocol}//${host}/${matchID}`);
+      };
+
+      joinMatch();
     }
   }
 
