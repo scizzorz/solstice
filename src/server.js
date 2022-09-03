@@ -3,11 +3,12 @@ import serve from 'koa-static';
 import { Server } from 'boardgame.io/server';
 import { Solstice } from './Game';
 
+const ADDRESS = process.env.ADDRESS;
 const PORT = process.env.PORT || 8000;
 
 const server = Server({
   games: [Solstice],
-  origins: [Origins.LOCALHOST, `http://${HOST}:${FRONTEND_PORT}`],
+  origins: [ADDRESS],
 });
 
 // Build path relative to the server.js file

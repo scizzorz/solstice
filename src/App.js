@@ -6,10 +6,9 @@ import { Solstice } from './Game';
 import { SolsticeBoard } from './Board';
 import { useRef } from 'react';
 
-const BACKEND_HOST = "fixme"
-const BACKEND_PORT = 8002;
+const ADDRESS = process.env.ADDRESS;
 
-const lobbyClient = new LobbyClient({ server: `http://${BACKEND_HOST}:${BACKEND_PORT}` });
+const lobbyClient = new LobbyClient({ server: ADDRESS });
 
 const CreateLobby = () => {
   const createMatch = async (numPlayers) => {
