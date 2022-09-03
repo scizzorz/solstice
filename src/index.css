@@ -311,17 +311,27 @@ code {
   box-sizing: border-box;
 }
 
-.cell:hover {
-  cursor: pointer;
-  background-color: var(--base2);
-  border-color: var(--base3);
+.cell.valid {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    border-color: var(--base2);
+  }
+
+  50% {
+    border-color: var(--base4);
+  }
+
+  100% {
+    border-color: var(--base2);
+  }
 }
 
 .cell.selected {
   border-color: var(--orange);
-}
-
-.cell.selected:hover {
+  animation: none;
 }
 
 .cell.p1 {
@@ -338,13 +348,6 @@ code {
 
 .cell.p4 {
   background-color: var(--green);
-}
-
-.cell.p1:hover,
-.cell.p2:hover,
-.cell.p3:hover,
-.cell.p4:hover {
-  border-color: var(--base3);
 }
 
 .cell.p1.inactive {
@@ -371,11 +374,24 @@ code {
   border-color: var(--green);
 }
 
-.cell.p1.inactive:hover,
-.cell.p2.inactive:hover,
-.cell.p3.inactive:hover,
-.cell.p4.inactive:hover {
+button.cell.p1:hover,
+button.cell.p2:hover,
+button.cell.p3:hover,
+button.cell.p4:hover {
+  border-color: var(--base3);
+}
+
+button.cell.p1.inactive:hover,
+button.cell.p2.inactive:hover,
+button.cell.p3.inactive:hover,
+button.cell.p4.inactive:hover {
   background-color: var(--base2);
+}
+
+button.cell:hover {
+  cursor: pointer;
+  background-color: var(--base2);
+  border-color: var(--base3);
 }
 
 #winner.p1 {

@@ -5,6 +5,36 @@ export function SolsticeBoard({ ctx, G, moves }) {
   const [selX, setX] = useState("x");
   const [selY, setY] = useState("y");
 
+  const isFirstRound = ctx.turn <= ctx.numPlayers;
+
+  const getPiece = function(x, y) {
+    if(x < 0 || y < 0 || x >= G.boardSize || y >= G.boardSize) {
+      return null;
+    }
+
+    return G.board[y * G.boardSize + x];
+  }
+
+  const getOffset = function(piece) {
+    let offX = 0;
+    let offY = 0;
+
+    if(piece === "dxxx") {
+      offY = -1;
+    }
+    else if(piece === "xdxx") {
+      offX = 1;
+    }
+    else if(piece === "xxdx") {
+      offY = 1;
+    }
+    else if(piece === "xxxd") {
+      offX = -1;
+    }
+
+    return {offX: offX, offY: offY};
+  }
+
   const sendMove = function(id, x, y, shieldBreak) {
     moves.playPiece(id, x, y, shieldBreak === true);
     setSelected("selected");
@@ -23,21 +53,7 @@ export function SolsticeBoard({ ctx, G, moves }) {
         }
         else {
           console.log("picking shield break");
-          let offX = 0;
-          let offY = 0;
-
-          if(piece === "dxxx") {
-            offY = -1;
-          }
-          else if(piece === "xdxx") {
-            offX = 1;
-          }
-          else if(piece === "xxdx") {
-            offY = 1;
-          }
-          else if(piece === "xxxd") {
-            offX = -1;
-          }
+          let { offX, offY } = getOffset(piece);
 
           if(x === selX + offX && y === selY + offY) {
             console.log("shield break");
@@ -58,17 +74,13 @@ export function SolsticeBoard({ ctx, G, moves }) {
         sendMove(selected, x, y);
       }
     }
-    else if(x === selX && y === selY) {
-      setX("x");
-      setY("y");
-    }
-    else {
-      setX(x);
-      setY(y);
-    }
   }
 
   const clickHand = function(id) {
+    if(!G.active) {
+      return;
+    }
+
     if(selX !== "x" && selY !== "y") {
       if(G.hand[id].indexOf("d") !== -1) {
         setSelected(id);
@@ -101,26 +113,84 @@ export function SolsticeBoard({ ctx, G, moves }) {
   for(let y = 0; y < G.boardSize; y++) {
     let cells = [];
     for(let x = 0; x < G.boardSize; x++) {
-      let id = y * G.boardSize + x;
+      const piece = getPiece(x, y);
+      const id = y * G.boardSize + x;
       let className = "cell";
+
+      // only useful when picking shield break
       if(x === selX && y === selY) {
         className += " selected";
       }
 
-      let cell = <button className={className} onClick={() => clickBoard(x, y)} />;
+      let cell = <span>replace me</span>;
 
-      if(G.board[id] !== null) {
-        let owner = parseInt(G.board[id].owner) + 1;
+      if(piece !== null) {
+        let owner = parseInt(piece.owner) + 1;
         className += " p" + owner;
-        if(G.board[id].active) {
+        if(piece.active) {
           className += " active";
+
+          // if we've picked the soul piece, highlight all face up pieces
+          if(selected !== "selected" && G.hand[selected] === "soul") {
+            className += " valid";
+          }
         }
         else {
           className += " inactive";
         }
 
-        let url = "/" + G.board[id].piece + ".svg";
-        cell = <button className={className} onClick={() => clickBoard(x, y)}><img src={url} alt={G.board[id].piece}/></button>;
+        if(selected !== "selected" && selX !== "x" && selY !== "y") {
+          let { offX, offY }  = getOffset(G.hand[selected]);
+
+          if(x === selX + offX && y === selY + offY) {
+            className += " valid";
+          }
+          else if(x === selX + offX * 2 && y === selY + offY * 2) {
+            className += " valid";
+          }
+        }
+
+        let url = "/" + piece.piece + ".svg";
+        let img = <img src={url} alt={piece.piece}/>;
+
+        if(className.indexOf("valid") !== -1) {
+          cell = <button className={className} onClick={() => clickBoard(x, y)}>
+            {img}
+          </button>;
+        }
+        else {
+          cell = <div className={className}>{img}</div>
+        }
+      }
+      else {
+        if(selected !== "selected") {
+          if (selX === "x" && selY === "y") {
+            // if we haven't picked the soul piece, highlight all empty spaces
+            if(G.hand[selected] !== "soul") {
+              const hasNeighbors = getPiece(x - 1, y) !== null || getPiece(x + 1, y) !== null || getPiece(x, y - 1) !== null || getPiece(x, y + 1) !== null;
+              if(!isFirstRound || !hasNeighbors) {
+                className += " valid";
+              }
+            }
+          }
+          else {
+            let { offX, offY }  = getOffset(G.hand[selected]);
+
+            if(x === selX + offX && y === selY + offY) {
+              className += " valid";
+            }
+            else if(x === selX + offX * 2 && y === selY + offY * 2) {
+              className += " valid";
+            }
+          }
+        }
+
+        if(className.indexOf("valid") !== -1) {
+          cell = <button className={className} onClick={() => clickBoard(x, y)} />;
+        }
+        else {
+          cell = <div className={className} />;
+        }
       }
 
       cells.push(
@@ -136,16 +206,33 @@ export function SolsticeBoard({ ctx, G, moves }) {
   let owner = parseInt(G.player) + 1;
   for(let h = 0; h < G.hand.length; h++) {
     let className = "active cell p" + owner;
+
+    // this nested if shit looks weird but it's actually necessary
+    if(G.active) {
+      if(G.hand[h] === "soul") {
+        if(!isFirstRound) {
+          className += " valid";
+        }
+      }
+      else {
+        className += " valid";
+      }
+    }
+
     if(h === selected) {
       className += " selected";
     }
 
     let url = "/" + G.hand[h] + ".svg";
-    hand.push(
-      <div key={h}>
-        <button className={className} onClick={() => clickHand(h)}><img src={url} alt={G.hand[h]}/></button>
-      </div>
-    );
+    let img = <img src={url} alt={G.hand[h]}/>;
+    let cell = <div className={className}>{img}</div>;
+    if(className.indexOf("valid") !== -1) {
+      cell = <button className={className} onClick={() => clickHand(h)}>
+        {img}
+      </button>;
+    }
+
+    hand.push(<div key={h}>{cell}</div>);
   }
 
   let boardClass = "board n" + ctx.numPlayers;

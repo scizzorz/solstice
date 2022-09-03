@@ -6,7 +6,9 @@ import { Solstice } from './Game';
 import { SolsticeBoard } from './Board';
 import { useRef } from 'react';
 
-const ADDRESS = process.env.ADDRESS || "https://xtfc-solstice.herokuapp.com/";
+const ADDRESS = process.env.ADDRESS || "http://hex.xtfc.org:5000";
+
+console.log("ADDRESS: " + ADDRESS);
 
 const lobbyClient = new LobbyClient({ server: ADDRESS });
 
