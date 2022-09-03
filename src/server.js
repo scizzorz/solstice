@@ -6,15 +6,24 @@ import { Solstice } from './Game';
 const ADDRESS = process.env.ADDRESS || "https://xtfc-solstice.herokuapp.com/";
 const PORT = process.env.PORT || 8000;
 
+console.log("ADDRESS: " + ADDRESS);
+console.log("PORT: " + PORT);
+
 const server = Server({
   games: [Solstice],
   origins: [ADDRESS],
 });
 
+console.log("Server created");
+
 // Build path relative to the server.js file
 const frontEndAppBuildPath = path.resolve(__dirname, '../build');
-console.log(frontEndAppBuildPath);
+
+console.log("frontEndAppBuildPath: " + frontEndAppBuildPath);
+
 server.app.use(serve(frontEndAppBuildPath))
+
+console.log("Used");
 
 server.run(PORT, () => {
   server.app.use(
@@ -24,3 +33,5 @@ server.run(PORT, () => {
     )
   )
 });
+
+console.log("Run");
