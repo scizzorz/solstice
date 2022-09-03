@@ -121,7 +121,7 @@ export function SolsticeBoard({ ctx, G, moves }) {
     for(let x = 0; x < G.boardSize; x++) {
       const piece = getPiece(x, y);
       const id = y * G.boardSize + x;
-      let className = "cell";
+      let className = "piece";
 
       // only useful when picking shield break
       if(x === selX && y === selY) {
@@ -211,7 +211,7 @@ export function SolsticeBoard({ ctx, G, moves }) {
   let hand = [];
   let owner = parseInt(G.player) + 1;
   for(let h = 0; h < G.hand.length; h++) {
-    let className = "active cell p" + owner;
+    let className = "active piece p" + owner;
 
     // this nested if shit looks weird but it's actually necessary
     if(G.active) {
@@ -241,13 +241,13 @@ export function SolsticeBoard({ ctx, G, moves }) {
     hand.push(<div key={h}>{cell}</div>);
   }
 
-  let boardClass = "board n" + ctx.numPlayers;
+  let boardClass = "n" + ctx.numPlayers;
   if(G.active) {
     boardClass += " active";
   }
 
   return (
-    <div className={boardClass}>
+    <div id="game" className={boardClass}>
       {winner}
       <table id="board">
         <tbody>{tbody}</tbody>

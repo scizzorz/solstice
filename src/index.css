@@ -20,27 +20,19 @@
   --magenta: #f542ff;
   --pink: #ff32a3;
 
+  --selected: var(--orange);
+  --valid: var(--purple);
+  --p1: var(--red);
+  --p2: var(--blue);
+  --p3: var(--yellow);
+  --p4: var(--green);
+
   --background: var(--base0);
   --foreground: var(--base4);
   --codebg: var(--base1);
   --codefg: var(--base4);
   --accent: var(--blue);
   --lowlight: var(--base3);
-
-  --nav: var(--indigo);
-  --byline: var(--indigo);
-
-  --mask: var(--purple);
-  --milk: var(--blue);
-  --mold: var(--yellow);
-  --vx: var(--teal);
-  --xcl: var(--pink);
-  --xtfc: var(--orange);
-
-  --great: var(--green);
-  --good: var(--lime);
-  --okay: var(--yellow);
-  --bad: var(--red);
 }
 
 html {
@@ -57,6 +49,11 @@ body {
   width: 42rem;
   padding: 1rem;
   margin: 0 auto;
+}
+
+.bgio-loading {
+  margin: 0 auto;
+  text-align: center;
 }
 
 h1 {
@@ -87,104 +84,31 @@ h2 {
   font-size: 4rem;
 }
 
-.bgio-loading {
-  margin: 0 auto;
-  text-align: center;
-}
-
-.cell {
+.piece {
   position: relative;
   width: 8rem;
   height: 8rem;
   padding: 0;
 }
 
-.cell img {
+.piece img {
   width: 100%;
   height: 100%;
 }
 
-.board.n2 #board .cell {
+#game.n2 #board .piece {
   width: 12rem;
   height: 12rem;
 }
 
-.board.n3 #board .cell {
+#game.n3 #board .piece {
   width: 10rem;
   height: 10rem;
 }
 
-.board.n4 #board .cell {
+#game.n4 #board .piece {
   width: 8rem;
   height: 8rem;
-}
-
-@media (max-width: 44rem) {
-  body {
-    width: 32rem;
-  }
-
-  h1 {
-    font-size: 6rem;
-  }
-
-  #winner {
-    font-size: 3rem;
-  }
-
-  .cell {
-    width: 6rem;
-    height: 6rem;
-  }
-
-  .board.n2 #board .cell {
-    width: 9rem;
-    height: 9rem;
-  }
-
-  .board.n3 #board .cell {
-    width: 7.5rem;
-    height: 7.5rem;
-  }
-
-  .board.n4 #board .cell {
-    width: 6rem;
-    height: 6rem;
-  }
-}
-
-@media (max-width: 34rem) {
-  body {
-    width: 22rem;
-  }
-
-  h1 {
-    font-size: 4rem;
-  }
-
-  #winner {
-    font-size: 2rem;
-  }
-
-  .cell {
-    width: 4rem;
-    height: 4rem;
-  }
-
-  .board.n2 #board .cell {
-    width: 6rem;
-    height: 6rem;
-  }
-
-  .board.n3 #board .cell {
-    width: 5rem;
-    height: 5rem;
-  }
-
-  .board.n4 #board .cell {
-    width: 4rem;
-    height: 4rem;
-  }
 }
 
 code {
@@ -236,19 +160,19 @@ code {
 
 #lobby #createMatch button.p2 {
   margin-right: 0;
-  border-color: var(--blue);
-  color: var(--blue);
+  border-color: var(--p2);
+  color: var(--p2);
 }
 
 #lobby #createMatch button.p3 {
   margin-right: 0;
-  border-color: var(--yellow);
-  color: var(--yellow);
+  border-color: var(--p3);
+  color: var(--p3);
 }
 
 #lobby #createMatch button.p4 {
-  border-color: var(--green);
-  color: var(--green);
+  border-color: var(--p4);
+  color: var(--p4);
 }
 
 #lobby #joinMatch {
@@ -280,29 +204,29 @@ code {
   border-color: var(--cyan);
 }
 
-.board {
+#game {
   text-align: center;
   margin: 0 auto;
 }
 
-.board.active {
+#game.active {
 }
 
-.board #board {
+#game #board {
   margin: 1rem auto;
   border-collapse: collapse;
 }
 
-.board #hand {
+#game #hand {
   margin: 1rem;
 }
 
-.board #hand > div {
+#game #hand > div {
   display: inline-block;
   margin: 0.5rem;
 }
 
-.cell {
+.piece {
   font-size: 1.5rem;
   background-color: var(--base1);
   border: 0.2rem solid var(--base2);
@@ -311,101 +235,166 @@ code {
   box-sizing: border-box;
 }
 
-.cell.valid {
-  animation: pulse 2s infinite;
+.piece.valid {
+  border-color: var(--valid);
 }
 
-@keyframes pulse {
-  0% {
-    border-color: var(--base2);
-  }
-
-  50% {
-    border-color: var(--base4);
-  }
-
-  100% {
-    border-color: var(--base2);
-  }
-}
-
-.cell.selected {
-  border-color: var(--orange);
+.piece.selected {
+  border-color: var(--selected);
   animation: none;
 }
 
-.cell.p1 {
-  background-color: var(--red);
+.piece.p1,
+button.piece.p1:hover {
+  background-color: var(--p1);
 }
 
-.cell.p2 {
-  background-color: var(--blue);
+.piece.p2,
+button.piece.p2:hover {
+  background-color: var(--p2);
 }
 
-.cell.p3 {
-  background-color: var(--yellow);
+.piece.p3,
+button.piece.p3:hover {
+  background-color: var(--p3);
 }
 
-.cell.p4 {
-  background-color: var(--green);
+.piece.p4,
+button.piece.p4:hover {
+  background-color: var(--p4);
 }
 
-.cell.p1.inactive {
+.piece.p1.inactive {
   background-color: var(--base1);
-  color: var(--red);
-  border-color: var(--red);
+  border-color: var(--p1);
 }
 
-.cell.p2.inactive {
+.piece.p2.inactive {
   background-color: var(--base1);
-  color: var(--blue);
-  border-color: var(--blue);
+  border-color: var(--p2);
 }
 
-.cell.p3.inactive {
+.piece.p3.inactive {
   background-color: var(--base1);
-  color: var(--yellow);
-  border-color: var(--yellow);
+  border-color: var(--p3);
 }
 
-.cell.p4.inactive {
+.piece.p4.inactive {
   background-color: var(--base1);
-  color: var(--green);
-  border-color: var(--green);
-}
-
-button.cell.p1:hover,
-button.cell.p2:hover,
-button.cell.p3:hover,
-button.cell.p4:hover {
-  border-color: var(--base3);
-}
-
-button.cell.p1.inactive:hover,
-button.cell.p2.inactive:hover,
-button.cell.p3.inactive:hover,
-button.cell.p4.inactive:hover {
-  background-color: var(--base2);
-}
-
-button.cell:hover {
-  cursor: pointer;
-  background-color: var(--base2);
-  border-color: var(--base3);
+  border-color: var(--p4);
 }
 
 #winner.p1 {
-  color: var(--red);
+  color: var(--p1);
 }
 
 #winner.p2 {
-  color: var(--blue);
+  color: var(--p2);
 }
 
 #winner.p3 {
-  color: var(--yellow);
+  color: var(--p3);
 }
 
 #winner.p4 {
-  color: var(--green);
+  color: var(--p4);
+}
+
+@media (min-width: 44rem) {
+  /* big screen only */
+  #lobby input,
+  #lobby #createMatch button,
+  #lobby #joinMatch button,
+  .piece {
+    border-width: 0.4rem;
+  }
+
+  button.piece.p1:hover,
+  button.piece.p2:hover,
+  button.piece.p3:hover,
+  button.piece.p4:hover {
+    border-color: var(--base3);
+  }
+
+  button.piece.p1.inactive:hover,
+  button.piece.p2.inactive:hover,
+  button.piece.p3.inactive:hover,
+  button.piece.p4.inactive:hover {
+    background-color: var(--base2);
+  }
+
+  button.piece:hover {
+    cursor: pointer;
+    background-color: var(--base2);
+    border-color: var(--base3);
+  }
+
+}
+
+@media (max-width: 44rem) {
+  body {
+    width: 32rem;
+  }
+
+  h1 {
+    font-size: 6rem;
+  }
+
+  #winner {
+    font-size: 3rem;
+  }
+
+  .piece {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  #game.n2 #board .piece {
+    width: 9rem;
+    height: 9rem;
+  }
+
+  #game.n3 #board .piece {
+    width: 7.5rem;
+    height: 7.5rem;
+  }
+
+  #game.n4 #board .piece {
+    width: 6rem;
+    height: 6rem;
+  }
+}
+
+@media (max-width: 34rem) {
+  body {
+    width: 22rem;
+  }
+
+  h1 {
+    font-size: 4rem;
+  }
+
+  #winner {
+    font-size: 2rem;
+  }
+
+  .piece {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  #game.n2 #board .piece {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  #game.n3 #board .piece {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  #game.n4 #board .piece {
+    width: 4rem;
+    height: 4rem;
+  }
 }
