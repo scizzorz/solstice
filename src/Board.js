@@ -43,18 +43,27 @@ export function SolsticeBoard({ ctx, G, moves }) {
   }
 
   const clickBoard = function(x, y) {
+    if(!G.active) {
+      return;
+    }
+
     if(selected !== "selected") {
       let piece = G.hand[selected];
       if(piece.indexOf("d") !== -1) { // we have a double dot selected
+        let { offX, offY } = getOffset(piece);
+
         if(selX === "x" && selY === "y") {
           setX(x);
           setY(y);
           console.log("need to pick shield break");
+
+          if(x + offX < 0 || x + offY >= G.boardSize || y + offY < 0 || y + offY >= G.boardSize) {
+            console.log("just kidding!");
+            sendMove(selected, x, y, false);
+          }
         }
         else {
           console.log("picking shield break");
-          let { offX, offY } = getOffset(piece);
-
           if(x === selX + offX && y === selY + offY) {
             console.log("shield break");
             sendMove(selected, selX, selY, true);
@@ -62,11 +71,6 @@ export function SolsticeBoard({ ctx, G, moves }) {
           else if(x === selX + offX * 2 && y === selY + offY * 2) {
             console.log("double tap");
             sendMove(selected, selX, selY, false);
-          }
-          else if(x === selX && y === selY) {
-            // FIXME this is an edge case until I add better logic about board edge finding
-            console.log("shield break");
-            sendMove(selected, selX, selY, true);
           }
         }
       }
@@ -81,20 +85,15 @@ export function SolsticeBoard({ ctx, G, moves }) {
       return;
     }
 
-    if(selX !== "x" && selY !== "y") {
-      if(G.hand[id].indexOf("d") !== -1) {
-        setSelected(id);
-        console.log("need to pick shield break");
-      }
-      else {
-        sendMove(id, selX, selY);
-      }
-    }
-    else if(id === selected) {
+    if(id === selected) {
       setSelected("selected");
+      setX("x");
+      setY("y");
     }
     else {
       setSelected(id);
+      setX("x");
+      setY("y");
     }
   }
 

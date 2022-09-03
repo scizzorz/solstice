@@ -297,7 +297,7 @@ code {
   margin: 1rem;
 }
 
-.board #hand div {
+.board #hand > div {
   display: inline-block;
   margin: 0.5rem;
 }
