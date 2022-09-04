@@ -1,5 +1,37 @@
 import React, { useState } from 'react';
 
+function Piece(piece, owner, selected, active, valid, onClick) {
+  let classes = ["piece", "p" + owner];
+
+  if(valid) {
+    classes.push("valid");
+  }
+
+  if(selected) {
+    classes.push("selected");
+  }
+
+  if(active) {
+    classes.push("active");
+  }
+  else {
+    classes.push("inactive");
+  }
+
+  const className = classes.join(" ");
+
+  let img = "";
+  if(piece !== null) {
+    img = <img src={"/" +piece + ".svg"} alt={piece}/>;
+  }
+
+  if(valid) {
+    return <button className={className} onClick={onClick}>{img}</button>;
+  }
+
+  return <div className={className}>{img}</div>
+}
+
 export function SolsticeBoard({ ctx, G, moves }) {
   const [selected, setSelected] = useState("selected");
   const [selX, setX] = useState("x");
