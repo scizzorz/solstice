@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 function Piece(piece, owner, selected, active, valid, onClick) {
-  let classes = ["piece", "p" + owner];
+  let classes = ["piece"];
 
   if(valid) {
     classes.push("valid");
@@ -11,19 +11,14 @@ function Piece(piece, owner, selected, active, valid, onClick) {
     classes.push("selected");
   }
 
-  if(active) {
-    classes.push("active");
-  }
-  else {
-    classes.push("inactive");
+  let img = "";
+  if(piece !== null && piece !== undefined) {
+    classes.push("p" + (parseInt(owner) + 1));
+    classes.push(active ? "active" : "inactive");
+    img = <img src={"/" +piece + ".svg"} alt={piece}/>;
   }
 
   const className = classes.join(" ");
-
-  let img = "";
-  if(piece !== null) {
-    img = <img src={"/" +piece + ".svg"} alt={piece}/>;
-  }
 
   if(valid) {
     return <button className={className} onClick={onClick}>{img}</button>;
@@ -153,51 +148,26 @@ export function SolsticeBoard({ ctx, G, moves }) {
     for(let x = 0; x < G.boardSize; x++) {
       const piece = getPiece(x, y);
       const id = y * G.boardSize + x;
-      let className = "piece";
+      let valid = false;
+      // const selected = (x === selX && y === selY);
 
-      // only useful when picking shield break
-      if(x === selX && y === selY) {
-        className += " selected";
-      }
-
-      let cell = <span>replace me</span>;
 
       if(piece !== null) {
-        let owner = parseInt(piece.owner) + 1;
-        className += " p" + owner;
-        if(piece.active) {
-          className += " active";
-
-          // if we've picked the soul piece, highlight all face up pieces
-          if(selected !== "selected" && G.hand[selected] === "soul") {
-            className += " valid";
-          }
-        }
-        else {
-          className += " inactive";
+        // if we've picked the soul piece, highlight all face up pieces
+        if(piece.active && selected !== "selected" && G.hand[selected] === "soul") {
+          valid = true;
         }
 
+        // if we've picked and placed a double dot, highlight the options
         if(selected !== "selected" && selX !== "x" && selY !== "y") {
           let { offX, offY }  = getOffset(G.hand[selected]);
 
           if(x === selX + offX && y === selY + offY) {
-            className += " valid";
+            valid = true;
           }
           else if(x === selX + offX * 2 && y === selY + offY * 2) {
-            className += " valid";
+            valid = true;
           }
-        }
-
-        let url = "/" + piece.piece + ".svg";
-        let img = <img src={url} alt={piece.piece}/>;
-
-        if(className.indexOf("valid") !== -1) {
-          cell = <button className={className} onClick={() => clickBoard(x, y)}>
-            {img}
-          </button>;
-        }
-        else {
-          cell = <div className={className}>{img}</div>
         }
       }
       else {
@@ -205,9 +175,11 @@ export function SolsticeBoard({ ctx, G, moves }) {
           if (selX === "x" && selY === "y") {
             // if we haven't picked the soul piece, highlight all empty spaces
             if(G.hand[selected] !== "soul") {
+
+              // if it's the first round, don't highlight places with an adjacent neighbor
               const hasNeighbors = getPiece(x - 1, y) !== null || getPiece(x + 1, y) !== null || getPiece(x, y - 1) !== null || getPiece(x, y + 1) !== null;
               if(!isFirstRound || !hasNeighbors) {
-                className += " valid";
+                valid = true;
               }
             }
           }
@@ -215,61 +187,38 @@ export function SolsticeBoard({ ctx, G, moves }) {
             let { offX, offY }  = getOffset(G.hand[selected]);
 
             if(x === selX + offX && y === selY + offY) {
-              className += " valid";
+              valid = true;
             }
             else if(x === selX + offX * 2 && y === selY + offY * 2) {
-              className += " valid";
+              valid = true;
             }
           }
         }
-
-        if(className.indexOf("valid") !== -1) {
-          cell = <button className={className} onClick={() => clickBoard(x, y)} />;
-        }
-        else {
-          cell = <div className={className} />;
-        }
       }
 
-      cells.push(
-        <td key={id}>
-          {cell}
-        </td>
-      );
+      let cell = Piece(piece?.piece, piece?.owner, (x === selX && y === selY), piece?.active, valid, () => clickBoard(x, y));
+
+      cells.push(<td key={id}>{cell}</td>);
     }
     tbody.push(<tr key={y}>{cells}</tr>);
   }
 
   let hand = [];
-  let owner = parseInt(G.player) + 1;
   for(let h = 0; h < G.hand.length; h++) {
-    let className = "active piece p" + owner;
-
     // this nested if shit looks weird but it's actually necessary
+    let valid = false;
     if(G.active) {
       if(G.hand[h] === "soul") {
         if(!isFirstRound) {
-          className += " valid";
+          valid = true;
         }
       }
       else {
-        className += " valid";
+        valid = true;
       }
     }
 
-    if(h === selected) {
-      className += " selected";
-    }
-
-    let url = "/" + G.hand[h] + ".svg";
-    let img = <img src={url} alt={G.hand[h]}/>;
-    let cell = <div className={className}>{img}</div>;
-    if(className.indexOf("valid") !== -1) {
-      cell = <button className={className} onClick={() => clickHand(h)}>
-        {img}
-      </button>;
-    }
-
+    let cell = Piece(G.hand[h], G.player, h === selected, true, valid, () => clickHand(h));
     hand.push(<div key={h}>{cell}</div>);
   }
 
