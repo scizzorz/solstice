@@ -1,21 +1,13 @@
-// import { Lobby } from 'boardgame.io/react';
+import { lobbyClient, ADDRESS } from './Base';
 import { Client } from 'boardgame.io/react';
-import { LobbyClient } from 'boardgame.io/client';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import { Solstice } from './Game';
 import { SolsticeBoard } from './Board';
-
-const ADDRESS = process.env.ADDRESS || "https://xtfc-solstice.herokuapp.com";
-
-console.log("ADDRESS: " + ADDRESS);
-
-const lobbyClient = new LobbyClient({ server: ADDRESS });
 
 const CreateLobby = () => {
   const createMatch = async (numPlayers) => {
     const { matchID } = await lobbyClient.createMatch("solstice", {
       numPlayers: numPlayers,
-      unlisted: true,
     });
 
     const { protocol, host } = window.location;
@@ -59,11 +51,13 @@ const App = () => {
         window.localStorage.setItem(`${matchID}_creds`, playerCredentials);
         window.localStorage.setItem(`${matchID}_id`, playerID);
 
+        // FIXME surely there's a better way to reload?
         const { protocol, host } = window.location;
         window.location.replace(`${protocol}//${host}/${matchID}`);
       };
 
       joinMatch();
+      return <div className="bgio-loading">joining...</div>;
     }
   }
 

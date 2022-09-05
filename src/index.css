@@ -241,7 +241,6 @@ code {
 
 .piece.selected {
   border-color: var(--selected);
-  animation: none;
 }
 
 .piece.p1,

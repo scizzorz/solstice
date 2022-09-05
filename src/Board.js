@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { lobbyClient } from './Base';
 
-function Piece(piece, owner, selected, active, valid, onClick) {
+function Piece(label, owner, selected, active, valid, onClick) {
   let classes = ["piece"];
 
   if(valid) {
@@ -12,10 +13,10 @@ function Piece(piece, owner, selected, active, valid, onClick) {
   }
 
   let img = "";
-  if(piece !== null && piece !== undefined) {
+  if(label !== null && label !== undefined) {
     classes.push("p" + (parseInt(owner) + 1));
     classes.push(active ? "active" : "inactive");
-    img = <img src={"/" +piece + ".svg"} alt={piece}/>;
+    img = <img src={"/" +label + ".svg"} alt={label}/>;
   }
 
   const className = classes.join(" ");
@@ -25,6 +26,26 @@ function Piece(piece, owner, selected, active, valid, onClick) {
   }
 
   return <div className={className}>{img}</div>
+}
+
+function getOffset(label) {
+  let offX = 0;
+  let offY = 0;
+
+  if(label === "dxxx") {
+    offY = -1;
+  }
+  else if(label === "xdxx") {
+    offX = 1;
+  }
+  else if(label === "xxdx") {
+    offY = 1;
+  }
+  else if(label === "xxxd") {
+    offX = -1;
+  }
+
+  return {offX: offX, offY: offY};
 }
 
 export function SolsticeBoard({ ctx, G, moves }) {
@@ -40,26 +61,6 @@ export function SolsticeBoard({ ctx, G, moves }) {
     }
 
     return G.board[y * G.boardSize + x];
-  }
-
-  const getOffset = function(piece) {
-    let offX = 0;
-    let offY = 0;
-
-    if(piece === "dxxx") {
-      offY = -1;
-    }
-    else if(piece === "xdxx") {
-      offX = 1;
-    }
-    else if(piece === "xxdx") {
-      offY = 1;
-    }
-    else if(piece === "xxxd") {
-      offX = -1;
-    }
-
-    return {offX: offX, offY: offY};
   }
 
   const sendMove = function(id, x, y, shieldBreak) {
@@ -131,14 +132,36 @@ export function SolsticeBoard({ ctx, G, moves }) {
     }
   }
 
+  const playAgain = async () => {
+    const matchID = window.location.pathname.substr(1);
+    const id = window.localStorage.getItem(`${matchID}_id`);
+    const creds = window.localStorage.getItem(`${matchID}_creds`);
+    const { nextMatchID } = await lobbyClient.playAgain("solstice", matchID, {
+      playerID: id,
+      credentials: creds,
+    });
+
+    const { protocol, host } = window.location;
+    window.location.replace(`${protocol}//${host}/${nextMatchID}`);
+  };
+
+  // borrow the winner display to show whose turn it is
   let winnerClassName = "p" + (parseInt(ctx.currentPlayer) + 1);
   let winner = <div id="winner" className={winnerClassName}>Player {parseInt(ctx.currentPlayer) + 1} turn</div>;
+
+  // unless it's actually game over
   if (ctx.gameover) {
     if(ctx.gameover.winners.length > 1) {
-      winner = <div id="winner">Draw!</div>;
+      winner = <div id="winner">
+        Draw!
+        <button onClick={playAgain}>play again</button>
+      </div>;
     } else {
       winnerClassName = "p" + (ctx.gameover.winners[0] + 1);
-      winner = <div id="winner" className={winnerClassName}>Player {ctx.gameover.winners[0] + 1} wins!</div>;
+      winner = <div id="winner" className={winnerClassName}>
+        Player {ctx.gameover.winners[0] + 1} wins!
+        <button onClick={playAgain}>play again</button>
+      </div>;
     }
   }
 
@@ -149,55 +172,47 @@ export function SolsticeBoard({ ctx, G, moves }) {
       const piece = getPiece(x, y);
       const id = y * G.boardSize + x;
       let valid = false;
-      // const selected = (x === selX && y === selY);
 
+      // only highlight valid moves if we've selected a piece from our hand
+      if(selected !== "selected") {
+        // if we've picked and placed a double dot, highlight the options
+        if(selX !== "x" && selY !== "y") {
+          let { offX, offY }  = getOffset(G.hand[selected]);
 
-      if(piece !== null) {
+          valid = [
+            x === selX + offX && y === selY + offY,
+            x === selX + offX * 2 && y === selY + offY * 2,
+          ].some(x => !!x);
+        }
+
         // if we've picked the soul piece, highlight all face up pieces
-        if(piece.active && selected !== "selected" && G.hand[selected] === "soul") {
+        else if(piece !== null && piece.active && G.hand[selected] === "soul") {
           valid = true;
         }
 
-        // if we've picked and placed a double dot, highlight the options
-        if(selected !== "selected" && selX !== "x" && selY !== "y") {
-          let { offX, offY }  = getOffset(G.hand[selected]);
+        // if we haven't picked the soul piece, highlight all empty spaces
+        // but if it's the first round, don't highlight places with an adjacent neighbor
+        else if(selX === "x" && selY === "y" && G.hand[selected] !== "soul") {
+          const hasNeighbors = [
+            getPiece(x, y), // technically not a "neighbor", but... well.
+            getPiece(x - 1, y),
+            getPiece(x + 1, y),
+            getPiece(x, y - 1),
+            getPiece(x, y + 1),
+          ].some(x => x !== null);
 
-          if(x === selX + offX && y === selY + offY) {
-            valid = true;
-          }
-          else if(x === selX + offX * 2 && y === selY + offY * 2) {
-            valid = true;
-          }
-        }
-      }
-      else {
-        if(selected !== "selected") {
-          if (selX === "x" && selY === "y") {
-            // if we haven't picked the soul piece, highlight all empty spaces
-            if(G.hand[selected] !== "soul") {
-
-              // if it's the first round, don't highlight places with an adjacent neighbor
-              const hasNeighbors = getPiece(x - 1, y) !== null || getPiece(x + 1, y) !== null || getPiece(x, y - 1) !== null || getPiece(x, y + 1) !== null;
-              if(!isFirstRound || !hasNeighbors) {
-                valid = true;
-              }
-            }
-          }
-          else {
-            let { offX, offY }  = getOffset(G.hand[selected]);
-
-            if(x === selX + offX && y === selY + offY) {
-              valid = true;
-            }
-            else if(x === selX + offX * 2 && y === selY + offY * 2) {
-              valid = true;
-            }
-          }
+          valid = !isFirstRound || !hasNeighbors;
         }
       }
 
-      let cell = Piece(piece?.piece, piece?.owner, (x === selX && y === selY), piece?.active, valid, () => clickBoard(x, y));
-
+      const cell = Piece(
+        piece?.piece,
+        piece?.owner,
+        (x === selX && y === selY),
+        piece?.active,
+        valid && !ctx.gameover,
+        () => clickBoard(x, y),
+      );
       cells.push(<td key={id}>{cell}</td>);
     }
     tbody.push(<tr key={y}>{cells}</tr>);
@@ -205,30 +220,26 @@ export function SolsticeBoard({ ctx, G, moves }) {
 
   let hand = [];
   for(let h = 0; h < G.hand.length; h++) {
-    // this nested if shit looks weird but it's actually necessary
     let valid = false;
-    if(G.active) {
-      if(G.hand[h] === "soul") {
-        if(!isFirstRound) {
-          valid = true;
-        }
-      }
-      else {
-        valid = true;
-      }
+    // only let the player pick from their hand if it's their turn and the game isn't over
+    if(G.active && !ctx.gameover) {
+      // basically just can't play the soul piece on round 1
+      valid = (G.hand[h] === "soul" && !isFirstRound) || (G.hand[h] !== "soul");
     }
 
-    let cell = Piece(G.hand[h], G.player, h === selected, true, valid, () => clickHand(h));
+    const cell = Piece(
+      G.hand[h],
+      G.player,
+      h === selected,
+      true,
+      valid,
+      () => clickHand(h),
+    );
     hand.push(<div key={h}>{cell}</div>);
   }
 
-  let boardClass = "n" + ctx.numPlayers;
-  if(G.active) {
-    boardClass += " active";
-  }
-
   return (
-    <div id="game" className={boardClass}>
+    <div id="game" className={"n" + ctx.numPlayers}>
       {winner}
       <table id="board">
         <tbody>{tbody}</tbody>
