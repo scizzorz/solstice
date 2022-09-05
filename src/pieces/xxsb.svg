@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<svg
+   width="25.399986mm"
+   height="25.4mm"
+   viewBox="0 0 25.399986 25.4"
+   version="1.1"
+   id="svg38316"
+   xmlns="http://www.w3.org/2000/svg">
+     id="namedview38318"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     showgrid="false"
+  <defs
+     id="defs38313" />
+  <g
+     id="layer1"
+     transform="translate(-92.382633,-135.8)">
+    <g
+       stroke="none"
+       id="g2262-73"
+       transform="matrix(25.399999,0,0,-25.399999,54.282634,167.55)"
+       >
+      <g
+         transform="translate(2,0.75)"
+         id="g2260-65"
+         >
+        <path
+           class="fill"
+           d="m 0,0.125 c 0,0 -0.125,-0.25 -0.125,-0.25 0,0 0.25,0 0.25,0 0,0 -0.125,0.25 -0.125,0.25"
+           id="path2258-6"
+            />
+      </g>
+    </g>
+    <g
+       stroke="none"
+       id="g2334-5-1-7-9-51"
+       transform="matrix(25.399999,0,0,-25.399999,-63.192362,176.54583)"
+       >
+      <g
+         transform="rotate(90,2.9375,3.6875)"
+         id="g2332-6-5-6-9-7"
+         >
+        <path
+           class="fill"
+           d="M 0,0.0625 C 0.0345178,0.0625 0.0625,0.0345178 0.0625,0 0.0625,-0.0345178 0.0345178,-0.0625 0,-0.0625 c -0.0345178,0 -0.0625,0.0279822 -0.0625,0.0625 0,0.0345178 0.0279822,0.0625 0.0625,0.0625"
+           id="path2330-1-9-3-08-4"
+            />
+      </g>
+    </g>
+    <g
+       stroke="none"
+       id="g3286-1-9-9"
+       transform="matrix(8.4666663,0,0,-84.666663,68.570134,180.25)"
+       >
+      <g
+         transform="translate(3.25,0.375)"
+         id="g3284-9-0-9"
+         >
+        <path
+           class="fill"
+           d="m -0.125,-0.0375 c 0,0 0.25,0 0.25,0 0,0 0,0.075 0,0.075 0,0 -0.25,0 -0.25,0 0,0 0,-0.075 0,-0.075"
+           id="path3282-9-2-4"
+            />
+      </g>
+    </g>
+  </g>
+</svg>

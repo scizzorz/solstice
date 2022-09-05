@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { lobbyClient } from './Base';
+import * as pieces from './Pieces';
 
 function Piece(label, owner, selected, active, valid, onClick) {
   let classes = ["piece"];
@@ -16,7 +17,10 @@ function Piece(label, owner, selected, active, valid, onClick) {
   if(label !== null && label !== undefined) {
     classes.push("p" + (parseInt(owner) + 1));
     classes.push(active ? "active" : "inactive");
-    img = <img src={"/" +label + ".svg"} alt={label}/>;
+
+    // this feels a lil weird but
+    const Component = pieces[label];
+    img = <Component />;
   }
 
   const className = classes.join(" ");
