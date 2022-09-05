@@ -84,6 +84,23 @@ h2 {
   font-size: 4rem;
 }
 
+#winner button {
+  display: block;
+  color: var(--base4);
+  border: 0.2rem solid var(--base4);
+  background-color: var(--base1);
+  font-size: 2rem;
+  padding: 1rem;
+  margin: 1rem auto;
+  height: 5rem;
+  box-sizing: border-box;
+}
+
+#winner button:hover {
+  background-color: var(--base2);
+  cursor: pointer;
+}
+
 .piece {
   position: relative;
   width: 8rem;
@@ -304,6 +321,7 @@ button.piece.p4:hover {
   #lobby input,
   #lobby #createMatch button,
   #lobby #joinMatch button,
+  #winner button,
   .piece {
     border-width: 0.4rem;
   }

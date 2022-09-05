@@ -154,13 +154,14 @@ export function SolsticeBoard({ ctx, G, moves }) {
     if(ctx.gameover.winners.length > 1) {
       winner = <div id="winner">
         Draw!
-        <button onClick={playAgain}>play again</button>
+        <button className="playAgain" onClick={playAgain}>play again</button>
       </div>;
-    } else {
+    }
+    else {
       winnerClassName = "p" + (ctx.gameover.winners[0] + 1);
       winner = <div id="winner" className={winnerClassName}>
         Player {ctx.gameover.winners[0] + 1} wins!
-        <button onClick={playAgain}>play again</button>
+        <button className="playAgain" onClick={playAgain}>play again</button>
       </div>;
     }
   }
