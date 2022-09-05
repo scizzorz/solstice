@@ -187,15 +187,14 @@ export function SolsticeBoard({ ctx, G, moves }) {
         }
 
         // if we've picked the soul piece, highlight all face up pieces
-        else if(piece !== null && piece.active && G.hand[selected] === "soul") {
+        else if(piece !== null && G.hand[selected] === "soul" && piece.active) {
           valid = true;
         }
 
         // if we haven't picked the soul piece, highlight all empty spaces
         // but if it's the first round, don't highlight places with an adjacent neighbor
-        else if(selX === "x" && selY === "y" && G.hand[selected] !== "soul") {
+        else if(piece === null && G.hand[selected] !== "soul" && selX === "x" && selY === "y") {
           const hasNeighbors = [
-            getPiece(x, y), // technically not a "neighbor", but... well.
             getPiece(x - 1, y),
             getPiece(x + 1, y),
             getPiece(x, y - 1),
