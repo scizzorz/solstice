@@ -41,7 +41,7 @@
      id="layer1"
      transform="translate(-92.382629,-135.80064)">
     <path
-       style="fill:#030504;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 98.732624,148.50063 4.233336,-2.11666 2.11666,-4.23334 2.11667,4.23334 4.23333,2.11666 -4.23333,2.11667 -2.11667,4.23333 -2.11666,-4.23333 z"
        id="path9424"
        sodipodi:nodetypes="ccccccccc" />

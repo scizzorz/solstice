@@ -45,16 +45,16 @@
        stroke="none"
        id="g2340-0"
        transform="matrix(25.399999,0,0,-25.399999,-72.717364,167.55)"
-       style="fill:#030504;fill-opacity:1">
+       >
       <g
          transform="translate(7,0.75)"
          id="g2338-8"
-         style="fill:#030504;fill-opacity:1">
+         >
         <path
            class="fill"
            d="m 0,0.125 c 0,0 -0.125,-0.25 -0.125,-0.25 0,0 0.25,0 0.25,0 0,0 -0.125,0.25 -0.125,0.25"
            id="path2336-8"
-           style="fill:#030504;fill-opacity:1" />
+            />
       </g>
     </g>
     <g
@@ -62,16 +62,16 @@
        stroke="none"
        id="g2334-5-8-1-1-04"
        transform="matrix(25.399999,0,0,-25.399999,-72.188195,167.55)"
-       style="fill:#030504;fill-opacity:1">
+       >
       <g
          transform="rotate(90,2.9375,3.6875)"
          id="g2332-6-4-8-3-8"
-         style="fill:#030504;fill-opacity:1">
+         >
         <path
            class="fill"
            d="M 0,0.0625 C 0.0345178,0.0625 0.0625,0.0345178 0.0625,0 0.0625,-0.0345178 0.0345178,-0.0625 0,-0.0625 c -0.0345178,0 -0.0625,0.0279822 -0.0625,0.0625 0,0.0345178 0.0279822,0.0625 0.0625,0.0625"
            id="path2330-1-8-9-1-7"
-           style="fill:#030504;fill-opacity:1" />
+            />
       </g>
     </g>
     <g
@@ -81,16 +81,16 @@
        transform="matrix(25.399999,0,0,-28.22222,22.532635,168.07917)"
        inkscape:transform-center-x="-1.982225"
        inkscape:transform-center-y="-3.2362933"
-       style="fill:#030504;fill-opacity:1">
+       >
       <g
          transform="translate(3.25,0.375)"
          id="g3284-0-8-2-8-2"
-         style="fill:#030504;fill-opacity:1">
+         >
         <path
            class="fill"
            d="m -0.125,-0.0375 c 0,0 0.25,0 0.25,0 0,0 0,0.075 0,0.075 0,0 -0.25,0 -0.25,0 0,0 0,-0.075 0,-0.075"
            id="path3282-8-2-1-6-1"
-           style="fill:#030504;fill-opacity:1" />
+            />
       </g>
     </g>
   </g>
