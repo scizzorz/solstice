@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "boardgame.io": "^0.49.12",
     "esm": "^3.2.25",
+    "human-readable-ids-browser": "^1.2.0",
     "koa-static": "^5.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
